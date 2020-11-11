@@ -22,7 +22,7 @@ class BootScene extends Phaser.Scene {
   
   
     this.load.image("button1", "../assets/blue_button01.png");
-    this.load.image("button2", "/assets/blue_button02.png");
+    this.load.image("button2", "../assets/blue_button02.png");
     this.load.image("bullet", "../assets/images/bullet.png");
 
     

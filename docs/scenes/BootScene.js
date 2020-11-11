@@ -40,6 +40,12 @@ class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+
+    this.load.spritesheet("enemy", "../assets/images/lizard.png", {
+      frameWidth: 16,
+      frameHeight: 28,
+    });
+    
     
   }
 
@@ -52,6 +58,6 @@ class BootScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("Title");
+    this.scene.start("Game");
   }
 }

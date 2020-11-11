@@ -16,12 +16,12 @@ class GameScene extends Phaser.Scene {
   create() {
     var shootTime = 0;
     this.createAudio();
-    this.createBackground();
+    
     this.createTilemap();
     this.createCamera();
-    //this.createSpikes();
     this.createPlayer();
-    this.createBullet();
+    this.createEnemy()
+    // this.createBullet();
     this.createText();
 
   }
@@ -35,30 +35,21 @@ class GameScene extends Phaser.Scene {
     this.music.play();
   }
 
-  createBackground() {
-    // create bg sprite
-    this.bg = this.add.sprite(0, 0, "background");
-    // change the origin to the top-left corner
-    this.bg.setOrigin(0, 0);
-  }
+ 
 
 
-  //14: Camera to follow player
+  
   createCamera() {
-    // Phaser supports multiple cameras, but you can access the default camera like this:
+   
     this.camera = this.cameras.main;
-    // Set up the arrows to control the camera
-    
-
-
-    // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
+     
     this.camera.setBounds(
       0,
       0,
       this.map.widthInPixels,
       this.map.heightInPixels
     );
-    // Constrain the physics world to the same dimensions
+    
     this.physics.world.setBounds(
       0,
       0,
@@ -75,7 +66,7 @@ class GameScene extends Phaser.Scene {
    
     this.tileset = this.map.addTilesetImage("tileset", "tiles");
 
-    
+    //Walls
     this.wallLayer = this.map.createStaticLayer(
       "Walls",
       this.tileset,
@@ -83,7 +74,7 @@ class GameScene extends Phaser.Scene {
       0
     );
 
-    
+    //Floor
     this.floorLayer = this.map.createStaticLayer(
      "Floor",
      this.tileset,
@@ -106,7 +97,6 @@ class GameScene extends Phaser.Scene {
   
 
   createPlayer() {
-    
     this.player = this.physics.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height / 2, "player");
     this.isPlayerAlive = true;
     this.player.score = 0;
@@ -156,6 +146,41 @@ class GameScene extends Phaser.Scene {
 
   }
 
+
+
+  createEnemy() {
+    
+    this.enemy = this.physics.add.sprite(200, 200, "enemy");
+    this.enemyAlive = true;
+    this.enemy.setScale(2);
+    this.enemyHealth = 3;
+    console.log(this.enemyHealth);
+    
+    
+    this.enemy.setCollideWorldBounds(true);
+
+    // animation states
+    this.anims.create({
+      key: "rightE",
+      frames: this.anims.generateFrameNumbers("enemy", { start: 1, end: 6 }), 
+      frameRate: 10,
+      repeat: -1,
+    });
+  
+    this.anims.create({
+      key: "standE",
+      frames: [{ key: "enemy", frame: 1 }],
+      frameRate: 10,
+    });
+
+    //Cause collision with player
+    this.physics.add.collider(this.enemy, this.player);
+    //Cause colllision with wall
+    this.physics.add.collider(this.enemy, this.wallLayer);
+    
+
+
+  }
   // createBullet(){
   
 
@@ -201,41 +226,34 @@ class GameScene extends Phaser.Scene {
 //       }
 // }
 
-// First Attempt at shooting
-createBullet(){
-  this.bullets = this.physics.add.group({
-    defaultKey: 'bullet',
-    maxSize: 10
-});
+// Second Attempt at shooting
+// createBullet(){
+//   this.bullets = this.physics.add.group({
+//     defaultKey: 'bullet',
+//     maxSize: 10
+// });
 
+// this.input.on('pointerdown', this.shoot, this);
+// }
 
-
-this.input.on('pointerdown', this.shoot, this);
-}
-
-    shoot() {
-      var bullet = this.bullets.get(this.player.x, this.player.y);
-      if (bullet) {
-          bullet.setActive(true);
-          bullet.setVisible(true);
-          bullet.body.velocity.y = -200;
-          bullet.setCollideWorldBounds(true);
-          this.physics.add.collider(bullet, this.wallLayer);
-          // if (bullet > 10){
-          //   bullet.setActive(false);
-          //   bullet.setVisible(false);
-          // }
+//     shoot() {
+//       var bullet = this.bullets.get(this.player.x, this.player.y);
+//       if (bullet) {
+//           bullet.setActive(true);
+//           bullet.setVisible(true);
+//           bullet.body.velocity.y = -200;
+//           bullet.setCollideWorldBounds(true);
+//           this.physics.add.collider(bullet, this.wallLayer);
+//           this.physics.add.collider(bullet, this.enemy);
+//           // if (bullet > 10){
+//           //   bullet.setActive(false);
+//           //   bullet.setVisible(false);
+//           // }
 
           
-      }
-    }
+//       }
+//     }
     
-
-
-
-
-   
-
     // // set random speeds for all children of enemies group
     // Phaser.Actions.Call(
     //   this.enemies.getChildren(),
@@ -277,17 +295,27 @@ this.input.on('pointerdown', this.shoot, this);
 
   //gameLoop
   update(time, delta) {
+
+   
+
     this.cursors = this.input.keyboard.createCursorKeys();
     
-    let keyA;
-    let keyS;
-    let keyD;
-    let keyW;
+    //Input Keys for movement
+    let keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    let keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
-    keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    // Test key input
+      //   if(keyA.isDown) {
+  //     console.log('A key pressed')
+  //  } else if(keyS.isDown) {
+  //     console.log('S key pressed')
+  //  } else if(keyD.isDown) {
+  //     console.log('D key pressed')
+  //  } else if(keyW.isDown) {
+  //     console.log('W key pressed')
+  //  }
 
   
 
@@ -300,66 +328,117 @@ this.input.on('pointerdown', this.shoot, this);
     // }
 
   
-  //   if(keyA.isDown) {
-  //     console.log('A key pressed')
-  //  } else if(keyS.isDown) {
-  //     console.log('S key pressed')
-  //  } else if(keyD.isDown) {
-  //     console.log('D key pressed')
-  //  } else if(keyW.isDown) {
-  //     console.log('W key pressed')
-  //  }
-            
 
+            
+    // Move/Animate the player
+      // Left
     if (keyA.isDown) {
       this.player.setVelocityX(-100);
       this.player.anims.play("left", true);
+      //Right
     } else if (keyD.isDown) {
       this.player.setVelocityX(100);
       this.player.anims.play("right", true);
+      //Up
     } else if (keyS.isDown){
       this.player.setVelocityY(100);
       this.player.anims.play("down", true);
+      //Down
     } else if (keyW.isDown) {
       this.player.setVelocityY(-100);
       this.player.anims.play("up", true);
+      //Stand
     } else {
       this.player.anims.play("stand");
       this.player.setVelocity(0);
     }
 
-    //Shooting
-    
-    // if (this.cursors.right.isDown) {
-    //   this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
-    //   this.bullet.setVelocityX(200);
-    //   this.bullet.setScale(0.2);
-    //   this.bullet.setCollideWorldBounds(true);
-    // } else if (this.cursors.up.isDown) {
-    //   this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
-    //   this.bullet.setVelocityY(-200);
-    //   this.bullet.setScale(0.2);
-    //   this.bullet.setCollideWorldBounds(true);
-    // } else if (this.cursors.left.isDown) {
-    //   this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
-    //   this.bullet.setVelocityX(-200);
-    //   this.bullet.setScale(0.2);
-    //   this.bullet.setCollideWorldBounds(true);
-    // } else if (this.cursors.down.isDown) {
-    //   this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
-    //   this.bullet.setVelocityY(200);
-    //   this.bullet.setScale(0.2);
-    //   this.bullet.setCollideWorldBounds(true);
-    
-    // }
+    //Enemy tracking player
+    //If the player is to the left and below
+    if (this.player.x < this.enemy.x & this.player.y > this.enemy.y  ) {
+      this.enemy.setVelocityX(-50);
+      this.enemy.setVelocityY(50);
+      this.enemy.anims.play("rightE", true);
+      this.enemy.setScale(-2, 2);
+      this.enemy.setOffset(16,0)
+      //If the player is to the right and below
+    } else  if ((this.player.x > this.enemy.x & this.player.y > this.enemy.y  )) {
+      this.enemy.setVelocityX(50);
+      this.enemy.setVelocityY(50);
+      this.enemy.anims.play("rightE", true);
+      this.enemy.setScale(2, 2);
+      this.enemy.setOffset(0,0)
+      //If the player is above
+    } else  if (this.player.y > this.enemy.y  ) {
+      this.enemy.setVelocityY(50);
+      this.enemy.anims.play("rightE", true);
+      //If the player is below
+    }else  if (this.player.y < this.enemy.y) {
+        this.enemy.setVelocityY(-50);
+        this.enemy.anims.play("rightE", true);
 
-    this.bullets.children.each(function(b) {
-      if (b.active) {
-          if (b.y < 0) {
-              b.setActive(false);
-          }
+    } else  if ((this.player.x > this.enemy.x & this.player.y < this.enemy.y  )) {
+      this.enemy.setVelocityX(50);
+      this.enemy.setVelocityY(-50);
+      this.enemy.anims.play("rightE", true);
+    } else  if ((this.player.x > this.enemy.x & this.player.y < this.enemy.y  )) {
+      this.enemy.setVelocityX(50);
+      this.enemy.setVelocityY(-50);
+      this.enemy.anims.play("rightE", true);
+      this.enemy.setScale(2, 2);
+      this.enemy.setOffset(0,0)
+    }
+
+    // as
+   // Shooting
+  
+    if (this.cursors.right.isDown) {
+      this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
+      this.bullet.setVelocityX(200);
+      this.bullet.setScale(0.2);
+      this.bullet.setCollideWorldBounds(true);
+      if (this.physics.add.collider(this.bullet, this.enemy)) {
+        this.enemyHealth = this.enemyHealth -1;
       }
-  }.bind(this));
+   
+    } else if (this.cursors.up.isDown) {
+      this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
+      this.bullet.setVelocityY(-200);
+      this.bullet.setScale(0.2);
+      this.bullet.setCollideWorldBounds(true);
+      if (this.physics.add.collider(this.bullet, this.enemy)) {
+        this.enemyHealth = this.enemyHealth -1;
+      }
+
+    } else if (this.cursors.left.isDown) {
+      this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
+      this.bullet.setVelocityX(-200);
+      this.bullet.setScale(0.2);
+      this.bullet.setCollideWorldBounds(true);
+      if (this.physics.add.collider(this.bullet, this.enemy)) {
+        this.enemyHealth = this.enemyHealth -1;
+      }
+      
+    } else if (this.cursors.down.isDown) {
+      this.bullet = this.physics.add.sprite(this.player.x, this.player.y, "bullet");
+      this.bullet.setVelocityY(200);
+      this.bullet.setScale(0.2);
+      this.bullet.setCollideWorldBounds(true);
+      if (this.physics.add.collider(this.bullet, this.enemy)) {
+        this.enemyHealth = this.enemyHealth -1;
+      }
+    
+    }
+
+     console.log(this.enemyHealth)
+     
+  //   this.bullets.children.each(function(b) {
+  //     if (b.active) {
+  //         if (b.y < 0) {
+  //             b.setActive(false);
+  //         }
+  //     }
+  // }.bind(this));
   
         
   

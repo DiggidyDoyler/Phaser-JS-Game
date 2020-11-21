@@ -26,10 +26,6 @@ class Bullet extends Phaser.GameObjects.Image {
         this.direction = dir; 
     }
 
-    setdestroyBullet(shootPosition){
-        this.playerPosition = shootPosition;
-    }
-
     update(time, delta)
     { 
         //update of bullet movement

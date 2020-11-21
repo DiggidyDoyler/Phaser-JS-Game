@@ -17,19 +17,35 @@ class BootScene extends Phaser.Scene {
   }
 
   loadImages() {
-    // load images
- 
-  
+    //Load Images
     this.load.image("bullet", "../assets/bullet.png");
     this.load.image("heart", "../assets/heart.png");
     this.load.image("button1", "../assets/blue_button01.png");
     this.load.image("button2", "../assets/blue_button02.png");
+
+    //Room Masks
+    this.load.image("hallway1", "../assets/roomMasks/hallway1.png");
+    this.load.image("hallway2", "../assets/roomMasks/hallway2.png");
+    this.load.image("hallway3", "../assets/roomMasks/hallway3.png");
+    this.load.image("hallway4", "../assets/roomMasks/hallway4.png");
+    this.load.image("hallway5", "../assets/roomMasks/hallway5.png");
+    this.load.image("hallway6", "../assets/roomMasks/hallway6.png");
+    this.load.image("hallway7", "../assets/roomMasks/hallway7.png");
+
+    this.load.image("room1", "../assets/roomMasks/room1.png");
+    this.load.image("room2", "../assets/roomMasks/room2.png");
+    this.load.image("room3", "../assets/roomMasks/room3.png");
+    this.load.image("room4", "../assets/roomMasks/room4.png");
+    this.load.image("room5", "../assets/roomMasks/room5.png");
+    this.load.image("room6", "../assets/roomMasks/room6.png");
+  
   }
   
   loadTilemaps() {
 
     this.load.image("tiles", "../assets/tilemaps/tileset.png");
-    this.load.tilemapTiledJSON("map", "../assets/tilemaps/space.json");
+    // this.load.tilemapTiledJSON("map", "../assets/tilemaps/space.json");
+    this.load.tilemapTiledJSON("map", "../assets/tilemaps/space2.json");
   }
 
   //13: loadBitmapText

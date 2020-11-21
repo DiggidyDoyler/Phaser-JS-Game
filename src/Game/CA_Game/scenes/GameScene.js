@@ -15,17 +15,20 @@ class GameScene extends Phaser.Scene {
   create() {
     
     this.createTilemap();
+    
     this.createPlayer();
+    this.hideAreas();
+    this.createCamera();
+
    
     // this.createEnemies();
     this.createText();
-
-    //16 bullets
-    this.createBullets();
-    this.createEnemy();
   
-    
 
+  
+    this.createBullets();
+    // this.createEnemy();
+  
    
   }
 
@@ -66,13 +69,14 @@ class GameScene extends Phaser.Scene {
 
   createPlayer() {
     //13: add  player sprite to physics engine
-    this.player = this.physics.add.sprite(50, this.scaleH / 2, "player");
+    this.player = this.physics.add.sprite(800, 640, "player");
     this.player.body.setSize(this.player.width * 0.5, this.player.height * 0.8);
     this.player.body.offset.y = 12;
     this.isPlayerAlive = true;
     this.isPlayerWinning = false;
     this.player.Health = 3;
     this.player.score = 0;
+    
    
     this.player.setCollideWorldBounds(true)
     this.physics.add.collider(this.player, this.wallLayer);
@@ -111,6 +115,192 @@ class GameScene extends Phaser.Scene {
       frames: [{ key: "player", frame: 2 }],
       frameRate: 10,
     });
+  }
+
+  hideAreas(){
+    this.hallway1 = this.physics.add.sprite(256, 400, "hallway1");
+    this.hallway2 = this.physics.add.sprite(256, 900, "hallway2");
+    this.hallway3 = this.physics.add.sprite(689, 640, "hallway3");
+    this.hallway4 = this.physics.add.sprite(1216, 336, "hallway4");
+    this.hallway5 = this.physics.add.sprite(1682, 513, "hallway5");
+    this.hallway6 = this.physics.add.sprite(1458, 1058, "hallway6");
+    this.hallway7 = this.physics.add.sprite(1500, 1250, "hallway7");
+
+    this.roomMask1 = this.physics.add.sprite(256, 624, "room1");
+    this.roomMask2 = this.physics.add.sprite(546, 1113, "room2");
+    this.roomMask3 = this.physics.add.sprite(1185, 624, "room3");
+    this.roomMask4 = this.physics.add.sprite(1216, 112, "room4");
+    this.roomMask5 = this.physics.add.sprite(2095, 867, "room5");
+    this.roomMask6 = this.physics.add.sprite(1505, 1521, "room6");
+  
+  // for(i = 0; i < 7; i ++){
+  //   this.physics.add.overlap(
+  //     this.player,
+  //     this.hallway[i],
+  //     this.collHallway[i],
+  //     null,
+  //     this
+  //   );
+  // }
+  
+  //Hallways
+  this.physics.add.overlap(
+    this.player,
+    this.hallway1,
+    this.collHallway1,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.hallway2,
+    this.collHallway2,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.hallway3,
+    this.collHallway3,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.hallway4,
+    this.collHallway4,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.hallway5,
+    this.collHallway5,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.hallway6,
+    this.collHallway6,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.hallway7,
+    this.collHallway7,
+    null,
+    this
+  );
+
+
+  //Rooms
+  this.physics.add.overlap(
+    this.player,
+    this.roomMask1,
+    this.roomMaskCol1,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.roomMask2,
+    this.roomMaskCol2,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.roomMask3,
+    this.roomMaskCol3,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.roomMask4,
+    this.roomMaskCol4,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.roomMask5,
+    this.roomMaskCol5,
+    null,
+    this
+  );
+
+  this.physics.add.overlap(
+    this.player,
+    this.roomMask6,
+    this.roomMaskCol6,
+    null,
+    this
+  );
+  }
+
+  roomMaskCol1(){
+    this.roomMask1.setVisible(false);
+  }
+
+  roomMaskCol2(){
+    this.roomMask2.setVisible(false);
+  }
+
+  roomMaskCol3(){
+    this.roomMask3.setVisible(false);
+  }
+
+  roomMaskCol4(){
+    this.roomMask4.setVisible(false);
+  }
+
+  roomMaskCol5(){
+    this.roomMask5.setVisible(false);
+  }
+
+  roomMaskCol6(){
+    this.roomMask6.setVisible(false);
+  }
+
+
+
+
+
+
+  createCamera() {
+  
+    this.camera = this.cameras.main;
+    this.camera.startFollow(this.player, true);
+    // this.camera.setZoom(4)
+  
+    this.physics.world.setBounds(
+      0,
+      0,
+      this.map.widthInPixels,
+      this.map.heightInPixels
+    );
+  }
+
+  zoomCamera(){
+    let keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+    if (keyM.isDown) {
+      this.camera.setZoom(1);
+    } else {
+      this.camera.setZoom(4);
+    }
   }
 
   createPlayerHealth(){
@@ -211,7 +401,7 @@ class GameScene extends Phaser.Scene {
     //16 bullets array is a group inside arcade physics engine
     this.bullets = this.physics.add.group({
         classType: Bullet,
-        maxSize: 2,
+        maxSize: 20,
         runChildUpdate: true
     });
 
@@ -331,16 +521,17 @@ class GameScene extends Phaser.Scene {
     this.scoreText.setTint(0xff0000, 0xffffff, 0xff0000,0xffffff);
     this.scoreText.setDepth();
 
-    // this.infoTxt = this.add.bitmapText(16, 60, 'bmFont', 'stuff');
-    // this.infoTxt.setScale(0.25);
-    // this.infoTxt.setTint(0xff00ff, 0xffffff, 0xff00ff,0xffffff);
-    // this.infoTxt.setDepth();
+    this.infoTxt = this.add.bitmapText(16, 60, 'bmFont', 'stuff');
+    this.infoTxt.setScale(0.25);
+    this.infoTxt.setTint(0xff00ff, 0xffffff, 0xff00ff,0xffffff);
+    this.infoTxt.setDepth();
   }
 
 
   //gameLoop
   update(time, delta) {
 
+    this.zoomCamera();
     this.createPlayerHealth()
     this.trackPlayer();
     this.checkEnemyHealth();
@@ -363,6 +554,7 @@ class GameScene extends Phaser.Scene {
     let keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
     let keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     let keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+  
 
 
 
@@ -411,6 +603,7 @@ class GameScene extends Phaser.Scene {
       
     }
 
+    //Shooting
     //Shoot Up
     if (keyI.isDown && time > this.lastFired) {
       console.log("fire")
@@ -422,6 +615,7 @@ class GameScene extends Phaser.Scene {
           this.bullet.fire(this.player.x, this.player.y);
           this.bullet.body.setSize(this.bullet.width * 1, this.bullet.height * 1);
           this.lastFired = time + 500;
+          
       }
       
     }
@@ -458,10 +652,10 @@ class GameScene extends Phaser.Scene {
       }
 
     
-  //   this.infoTxt.setText([
-  //     'Used: ' + this.bullets.getTotalUsed(),
-  //     'Free: ' + this.bullets.getTotalFree()
-  //  ]);
+    this.infoTxt.setText([
+      'Used: ' + this.bullets.getTotalUsed(),
+      'Free: ' + this.bullets.getTotalFree()
+   ]);
 
   
     
@@ -501,5 +695,35 @@ class GameScene extends Phaser.Scene {
   gameOver() {
     console.log("hello from gameOver")
     this.scene.start("GameOver");
+  }
+
+
+  // Collisions For Masks
+  collHallway1(){
+    this.hallway1.setVisible(false);
+  }
+
+  collHallway2(){
+    this.hallway2.setVisible(false);
+  }
+
+  collHallway3(){
+    this.hallway3.setVisible(false);
+  }
+
+  collHallway4(){
+    this.hallway4.setVisible(false);
+  }
+
+  collHallway5(){
+    this.hallway5.setVisible(false);
+  }
+
+  collHallway6(){
+    this.hallway6.setVisible(false);
+  }
+
+  collHallway7(){
+    this.hallway7.setVisible(false);
   }
 }

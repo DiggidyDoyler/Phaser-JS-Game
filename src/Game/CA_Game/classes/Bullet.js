@@ -9,6 +9,7 @@ class Bullet extends Phaser.GameObjects.Image {
         this.speed = Phaser.Math.GetSpeed(500, 1);
         this.setScale(.4);
         this.direction = "r";
+        this.playerPosition;
     }
     
     fire (x, y)
@@ -23,6 +24,10 @@ class Bullet extends Phaser.GameObjects.Image {
     setDir(dir) {
         console.log("New dir: " , dir);
         this.direction = dir; 
+    }
+
+    setdestroyBullet(shootPosition){
+        this.playerPosition = shootPosition;
     }
 
     update(time, delta)
@@ -42,12 +47,20 @@ class Bullet extends Phaser.GameObjects.Image {
         
 
         //check for bullet limit (500 px on X axis)
-        if (this.x > 550 || this.x < -5 || this.y > 550 || this.y < -5)
+        if (this.x > 2300 || this.x < -5 || this.y > 1700 || this.y < -5)
         {
             //if outside view make inactive and invisible
             this.setActive(false);
             this.setVisible(false);
         }
+
+                // //check for bullet limit (500 px on X axis)
+                // if (this.x > (playerPosition  + 100) || this.x < (playerPosition - 100) || this.y > (playerPosition + 100) || this.y < (playerPosition -100))
+                // {
+                //     //if outside view make inactive and invisible
+                //     this.setActive(false);
+                //     this.setVisible(false);
+                // }
     }
 
 }

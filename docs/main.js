@@ -1,12 +1,14 @@
+//13 physics
 var config = {
   type: Phaser.AUTO,
   pixelArt: true,
-  width: 512,
-  height: 320,
+  width: 1920,
+  height: 1080,
   scene: [
     BootScene,
     TitleScene,
     GameScene,
+    WinScene,
     UiScene,
     GameOverScene
   ],

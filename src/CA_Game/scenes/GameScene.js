@@ -19,21 +19,13 @@ class GameScene extends Phaser.Scene {
   create() {
     
     this.createTilemap();
-    
     this.createPlayer();
-    
     this.createCamera();
-
-   
-
     this.createText();
-  
-
-  
     this.createBullets();
-    this.createEnemy();
+    this.createEnemies();
     this.handleCollisions();
-    // this.hideAreas();
+    this.hideAreas();
    
   }
 
@@ -214,122 +206,28 @@ class GameScene extends Phaser.Scene {
     this.roomMask5 = this.physics.add.sprite(2095, 867, "room5");
     this.roomMask6 = this.physics.add.sprite(1505, 1521, "room6");
   
-  // for(i = 0; i < 7; i ++){
-  //   this.physics.add.overlap(
-  //     this.player,
-  //     this.hallway[i],
-  //     this.collHallway[i],
-  //     null,
-  //     this
-  //   );
-  // }
-  
+  let i;
   //Hallways
+  for(i=1; i<8; i++){
   this.physics.add.overlap(
     this.player,
-    this.hallway1,
-    this.collHallway1,
+    this['hallway' + i],
+    this['collHallway' + i],
     null,
     this
   );
-
-  this.physics.add.overlap(
-    this.player,
-    this.hallway2,
-    this.collHallway2,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.hallway3,
-    this.collHallway3,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.hallway4,
-    this.collHallway4,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.hallway5,
-    this.collHallway5,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.hallway6,
-    this.collHallway6,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.hallway7,
-    this.collHallway7,
-    null,
-    this
-  );
-
+  }
 
   //Rooms
-  this.physics.add.overlap(
-    this.player,
-    this.roomMask1,
-    this.roomMaskCol1,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.roomMask2,
-    this.roomMaskCol2,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.roomMask3,
-    this.roomMaskCol3,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.roomMask4,
-    this.roomMaskCol4,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.roomMask5,
-    this.roomMaskCol5,
-    null,
-    this
-  );
-
-  this.physics.add.overlap(
-    this.player,
-    this.roomMask6,
-    this.roomMaskCol6,
-    null,
-    this
-  );
+  for(i=1; i<7; i++){
+    this.physics.add.overlap(
+      this.player,
+      this['roomMask' + i],
+      this['roomMaskCol' + i],
+      null,
+      this
+    );
+    }
   }
 
   createCamera() {
@@ -355,11 +253,7 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-
-  createEnemy() {
-  
-    // this.enemy = new Enemy(this, 300, 150); 
-
+  createEnemies() {
     //Area 1
     this.enemy1 = new Enemy(this, 100, 600); 
     this.enemy2 = new Enemy(this, 360, 600); 
@@ -387,212 +281,57 @@ class GameScene extends Phaser.Scene {
     this.enemies = [this.enemy1,this.enemy2,this.enemy3,this.enemy4,this.enemy5,this.enemy6,this.enemy7,this.enemy8,this.enemy9,this.enemy10,this.enemy11,this.enemy12,this.enemy13,this.enemy14,this.enemy15,this.enemy16]
     this.physics.add.collider(this.enemies, this.wallLayer);
  
-  
-    this.handlePlayerEnemyCollider = this.physics.add.collider(this.enemies,this.player);
-    this.physics.add.collider(this.enemy1,this.enemy2);
+    //Looping enemy collider, so all of the enemies will collide with all other enemies
+    let i;
+    for(i=1; i<17; i++){
+    this.physics.add.collider(this.enemy1,this['enemy' + i]);
+    this.physics.add.collider(this.enemy2,this['enemy' + i]);
+    this.physics.add.collider(this.enemy3,this['enemy' + i]);
+    this.physics.add.collider(this.enemy4,this['enemy' + i]);
+    this.physics.add.collider(this.enemy5,this['enemy' + i]);
+    this.physics.add.collider(this.enemy6,this['enemy' + i]);
+    this.physics.add.collider(this.enemy7,this['enemy' + i]);
+    this.physics.add.collider(this.enemy8,this['enemy' + i]);
+    this.physics.add.collider(this.enemy9,this['enemy' + i]);
+    this.physics.add.collider(this.enemy10,this['enemy' + i]);
+    this.physics.add.collider(this.enemy11,this['enemy' + i]);
+    this.physics.add.collider(this.enemy12,this['enemy' + i]);
+    this.physics.add.collider(this.enemy13,this['enemy' + i]);
+    this.physics.add.collider(this.enemy14,this['enemy' + i]);
+    this.physics.add.collider(this.enemy15,this['enemy' + i]);
+    this.physics.add.collider(this.enemy16,this['enemy' + i]);
+    }
         
   }
 
   handleCollisions(){
- 
 
+    this.handlePlayerEnemyCollider = this.physics.add.collider(this.enemies,this.player);
+ 
+    let i;
+    for(i=1; i<17; i++){
       //Add collider between Bullets and enemies  
       this.physics.add.overlap(
         this.bullets,
-        this.enemy1,
-        this.collBulletEnemy1,
+        this['enemy' + i],
+        this['collBulletEnemy' + i],
         null,
         this
       );
+    }
 
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy2,
-      this.collBulletEnemy2,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy3,
-      this.collBulletEnemy3,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy4,
-      this.collBulletEnemy4,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy5,
-      this.collBulletEnemy5,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy6,
-      this.collBulletEnemy6,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy7,
-      this.collBulletEnemy7,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy8,
-      this.collBulletEnemy8,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy9,
-      this.collBulletEnemy9,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy10,
-      this.collBulletEnemy10,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy11,
-      this.collBulletEnemy11,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy12,
-      this.collBulletEnemy12,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy13,
-      this.collBulletEnemy13,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy14,
-      this.collBulletEnemy14,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy15,
-      this.collBulletEnemy15,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.bullets,
-      this.enemy16,
-      this.collBulletEnemy16,
-      null,
-      this
-    );
-
-
-    //Add collider between Enemy and Player
+    //Add collider between Player and loops
+    for(i=1; i<17; i++){
     this.physics.add.overlap(
       this.player,
-      this.enemy1,
-      this.collPlayerEnemy1,
+      this['enemy' + i],
+      this['collPlayerEnemy' + i],
       null,
       this
     );
+    }
 
-    this.physics.add.overlap(
-      this.player,
-      this.enemy2,
-      this.collPlayerEnemy2,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.enemy3,
-      this.collPlayerEnemy3,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.enemy4,
-      this.collPlayerEnemy4,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.enemy5,
-      this.collPlayerEnemy5,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.enemy6,
-      this.collPlayerEnemy6,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.enemy7,
-      this.collPlayerEnemy7,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.enemy8,
-      this.collPlayerEnemy8,
-      null,
-      this
-    );
   }
-
-
 
 
   checkEnemyHealth(){
@@ -678,7 +417,6 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-    
     
   createBullets() {
     //16 bullets array is a group inside arcade physics engine

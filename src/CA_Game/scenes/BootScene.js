@@ -19,9 +19,10 @@ class BootScene extends Phaser.Scene {
   loadImages() {
     //Load Images
     this.load.image("bullet", "../assets/bullet.png");
-    this.load.image("heart", "../assets/heart.png");
+    this.load.image("ship", "../assets/ship.png");
     this.load.image("button1", "../assets/blue_button01.png");
     this.load.image("button2", "../assets/blue_button02.png");
+    this.load.image("health", "../assets/health.png");
 
     //Room Masks
     this.load.image("hallway1", "../assets/roomMasks/hallway1.png");
@@ -63,15 +64,16 @@ class BootScene extends Phaser.Scene {
     frameWidth: 16,
     frameHeight: 28,
   });
+
 }
 
 
   loadAudio() {
-    // Adding Sounds
-    this.load.audio("bgmusic", [
-      "../assets/bgmusic.mp3",
-      "../assets/bgmusic.ogg",
-    ]);
+    // // Adding Sounds
+    // this.load.audio("bgmusic", [
+    //   "../assets/bgmusic.mp3",
+    //   "../assets/bgmusic.ogg",
+    // ]);
   }
 
   create() {

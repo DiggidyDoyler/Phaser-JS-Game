@@ -6,12 +6,14 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        // this.body.immovable = true;
   
         this.body.setSize(this.width, this.height -10);
         this.body.offset.y = 9;
         this.setScale(2); 
         this.health = 3;
         this.alive = true;
+        this.speed = 60;
         //this.enemyAlive = true;
         this.detectionZone = 30;
        
@@ -42,37 +44,39 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // console.log("Player detected!")
       if (this.health > 0) {
 
-             //If the player above
-            if (y < this.y) {
-              this.setVelocityY(-50);
-              this.anims.play("rightE", true);
-              this.setScale(2, 2);
-              this.setOffset(0,10)
-             } 
-      
-              //if the player is below
-            if (y > this.y) {
-              this.setVelocityY(50);
-              this.anims.play("rightE", true);
-              this.setScale(2, 2);
-              this.setOffset(0,10)
-             }
-                // //If the player is to the left
-            if (x < this.x) {
-                this.setVelocityX(-50);
-                this.anims.play("rightE", true);
-                this.setScale(-2, 2);
-                this.setOffset(15,10)
-              
-                } 
-              //if the player is to the right
-            if (x > this.x) {
-                this.setVelocityX(50);
-                this.anims.play("rightE", true);
-                this.setScale(2, 2);
-                this.setOffset(0,10)
-                } 
-              
+        //If the player above
+        if (y < this.y) {
+          this.setVelocityY(-this.speed);
+          this.anims.play("rightE", true);
+          this.setScale(2, 2);
+          this.setOffset(0, 10)
+        }
+
+        //if the player is below
+        if (y > this.y) {
+          this.setVelocityY(this.speed);
+          this.anims.play("rightE", true);
+          this.setScale(2, 2);
+          this.setOffset(0, 10)
+        }
+        //If the player is to the left
+        if (x < this.x) {
+          this.setVelocityX(-this.speed);
+          this.anims.play("rightE", true);
+          this.setScale(-2, 2);
+          this.setOffset(15, 10)
+
+        }
+        //if the player is to the right
+        if (x > this.x) {
+          this.setVelocityX(this.speed);
+          this.anims.play("rightE", true);
+          this.setScale(2, 2);
+          this.setOffset(0, 10)
+        }
+
+  
+
 
 
         //If the player is to the left and below

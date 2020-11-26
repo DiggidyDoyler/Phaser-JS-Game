@@ -497,26 +497,7 @@ class GameScene extends Phaser.Scene {
     this.healthText.setDepth();
   }
 
-  endGame(){
-    //Lose
-    if (this.player.Health <= 0){
-      this.isPlayerAlive = false;
-    }
 
-    if (!this.player.isPlayerAlive) {   
-      this.gameOver();  
-      return;
-    
-     
-    }
-
-    //Win
-    if (this.player.isPlayerWinning === true){
-      this.scene.start("Win",{score: this.player.score})
-      return;
-    }
-  
-  }
 
   updateText() {
     //M 
@@ -553,13 +534,29 @@ class GameScene extends Phaser.Scene {
  
   //gameLoop
   update(time, delta) {
+    //Lose
+    if (this.player.Health <= 0){
+      this.isPlayerAlive = false;
+    }
+
+    if (!this.player.isPlayerAlive) {   
+      this.gameOver();  
+      return;
+    
+     
+    }
+
+    //Win
+    if (this.player.isPlayerWinning === true){
+      this.scene.start("Win",{score: this.player.score})
+      return;
+    }
   
     this.checkPlayerHealth();
     this.zoomCamera();
     this.movePlayer();
     this.checkEnemyHealth();
     this.updateText();
-    this.endGame();
 
     // //Tracking first area
     if (this.player.y > 470){

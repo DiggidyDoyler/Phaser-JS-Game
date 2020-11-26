@@ -500,7 +500,7 @@ class GameScene extends Phaser.Scene {
   endGame(){
     //Lose
     if (this.player.Health <= 0){
-      this.isPlayerAlive = false;
+      this.isPlayerAlive === false;
     }
 
     if (!this.player.isPlayerAlive) {   
@@ -515,7 +515,11 @@ class GameScene extends Phaser.Scene {
       this.scene.start("Win",{score: this.player.score})
       return;
     }
-  
+  }
+
+  gameOver() {
+    console.log("hello from gameOver")
+    this.scene.start("GameOver");
   }
 
   updateText() {
@@ -665,12 +669,6 @@ class GameScene extends Phaser.Scene {
     }
 
   }
-
-  gameOver() {
-    console.log("hello from gameOver")
-    this.scene.start("GameOver");
-  }
-
 
   // Collisions For Masks
   collHallway1(){

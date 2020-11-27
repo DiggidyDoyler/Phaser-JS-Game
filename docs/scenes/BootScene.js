@@ -7,7 +7,7 @@ class BootScene extends Phaser.Scene {
     console.log("preloading");
     // load images
     this.loadImages();
-    //13 load Bitmap text
+    // load Bitmap text
     this.loadBitmapText();
     // load spritesheets
     this.loadSpriteSheets();
@@ -18,6 +18,12 @@ class BootScene extends Phaser.Scene {
 
   loadImages() {
     //Load Images
+    //Title Screen
+    this.load.image("background", "assets/stars.jpg");
+    this.load.image("station", "assets/spaceStation.png");
+
+
+    //Main Game
     this.load.image("bullet", "assets/bullet.png");
     this.load.image("ship", "assets/ship.png");
     this.load.image("button1", "assets/blue_button01.png");
@@ -49,34 +55,90 @@ class BootScene extends Phaser.Scene {
     this.load.tilemapTiledJSON("map", "assets/tilemaps/space2.json");
   }
 
-  //13: loadBitmapText
+  //LoadBitmapText
   loadBitmapText() {
     this.load.bitmapFont('bmFont', 'assets/bitmapfonts/font.png', 'assets/bitmapfonts/font.fnt');
   }
 
+  //Loading Sprite Sheets
+  //Player
   loadSpriteSheets() {
     this.load.spritesheet("player", "assets/characterSprite.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
-
+  //Enemy
   this.load.spritesheet("enemy", "assets/lizard.png", {
     frameWidth: 16,
     frameHeight: 28,
+  });
+  //Explosion1
+  this.load.spritesheet("explosion1", "assets/explosion1.png", {
+    frameWidth: 256,
+    frameHeight: 256,
+  });
+   //Explosion2
+   this.load.spritesheet("explosion2", "assets/explosion2.png", {
+    frameWidth: 256,
+    frameHeight: 256,
+  });
+   //Explosion1
+   this.load.spritesheet("explosion3", "assets/explosion3.png", {
+    frameWidth: 256,
+    frameHeight: 256,
   });
 
 }
 
 
-  loadAudio() {
-    // // Adding Sounds
-    // this.load.audio("bgmusic", [
-    //   "assets/bgmusic.mp3",
-    //   "assets/bgmusic.ogg",
-    // ]);
-  }
+loadAudio() {
+  // Adding Sounds
+  //Music
+  this.load.audio("mainmusic", [
+    "assets/sounds/mainMusic.mp3",
+    "assets/sounds/mainMusic.ogg",
+  ]);
+
+  this.load.audio("introMusic", [
+    "assets/sounds/introMusic.mp3",
+    "assets/sounds/introMusic.ogg",
+  ]);
+
+  this.load.audio("gameOver", [
+    "assets/sounds/gameOver.mp3",
+    "assets/sounds/gameOver.ogg",
+  ]);
+
+  //Sound effects
+  this.load.audio("laser", [
+    "assets/sounds/laser.mp3",
+    "assets/sounds/laser.ogg",
+  ]);
+
+  this.load.audio("enemyHit", [
+    "assets/sounds/enemyHit.mp3",
+    "assets/sounds/enemyHit.ogg",
+  ]);
+
+  this.load.audio("healthUp", [
+    "assets/sounds/healthUp.mp3",
+    "assets/sounds/healthUp.ogg",
+  ]);
+
+  this.load.audio("playerHit", [
+    "assets/sounds/playerHit.mp3",
+    "assets/sounds/playerHit.ogg",
+  ]);
+
+  this.load.audio("playerDeath", [
+    "assets/sounds/playerDeath.mp3",
+    "assets/sounds/playerDeath.ogg",
+  ]);
+
+}
+
 
   create() {
-    this.scene.start("Game");
+    this.scene.start("Title");
   }
 }

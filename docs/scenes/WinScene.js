@@ -15,6 +15,7 @@ class WinScene extends Phaser.Scene {
     //Add Music
     this.music = this.sound.add("winMusic");
     this.music.play();
+    this.music.loop = true;
     
 
     //Add background image

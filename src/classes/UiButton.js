@@ -26,7 +26,7 @@ class UiButton extends Phaser.GameObjects.Container {
     // 13 create the button bitmaptext
     this.buttonText = this.scene.add.bitmapText(0,0, 'bmFont', this.text);
     this.buttonText.setScale(0.5);
-    this.buttonText.setTint(0xff00ff,0xff00ff, 0xff00ff, 0xff00ff);
+    this.buttonText.setTint(0xffffff,0xffffff, 0xffffff, 0xffffff);
     this.buttonText.setOrigin(0,-0.3);
 
     //this.buttonText = this.scene.add.text(0, 0, this.text , { fontSize: '26px', fill: '#fff' });

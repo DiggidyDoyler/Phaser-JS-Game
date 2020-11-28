@@ -1,12 +1,12 @@
 class GameOverScene extends Phaser.Scene {
   constructor(s) {
     super('GameOver');
-    
+
   }
 
   init() {
-    this.scaleW = this.sys.game.config.width; 
-    this.scaleH = this.sys.game.config.height; 
+    this.scaleW = this.sys.game.config.width;
+    this.scaleH = this.sys.game.config.height;
   }
 
   create() {
@@ -21,28 +21,21 @@ class GameOverScene extends Phaser.Scene {
     //SpaceShip
     this.spaceStation = this.add.sprite(1250, 550, "station");
     this.spaceStation.setScale(3);
-    
+
+    //Explosion function
     this.createExplosion();
-    
 
-
+    //Text
     this.gameOverText = this.add.bitmapText(this.scaleW / 2, 200, 'bmFont', 'Game Over!');
     this.gameOverText.setOrigin(0.5);
     this.gameOverText.setScale(2.5);
-    this.gameOverText.setTint(0xffffff,0xffffff, 0xffffff, 0xffffff);
+    this.gameOverText.setTint(0xffffff, 0xffffff, 0xffffff, 0xffffff);
 
-
-    // create title text
-   // this.titleText = this.add.text(, 'Game Over', { fontSize: '64px', fill: '#fff' });
-       //13 bitmapFont
-
- 
-    
-
-    // create the Play game button
-    this.startGameButton = new UiButton(this, this.scaleW / 2, this.scaleH * 0.65, 'button1', 'button2', 'Main menu', this.startScene.bind(this, 'Title'));
+    //Button
+    this.mainMenuButton = new UiButton(this, this.scaleW / 2, this.scaleH * 0.65, 'button1', 'button2', 'Main menu', this.startScene.bind(this, 'Title'));
   }
 
+  //Create explosion animations
   createExplosion() {
     //Explosion1
     this.explosion1 = this.add.sprite(600, 500, "explosion1");
@@ -56,7 +49,6 @@ class GameOverScene extends Phaser.Scene {
     this.explosion1.anims.play("explode1", true);
 
     //Explosion2
-
     this.explosion2 = this.add.sprite(1100, 700, "explosion2");
     this.anims.create({
       key: "explode2",
@@ -69,14 +61,13 @@ class GameOverScene extends Phaser.Scene {
       400,
       function () {
         this.explosion2.anims.play("explode2", true);
-       
+
       },
       [],
       this
     );
 
     //Explosion3
-
     this.explosion3 = this.add.sprite(1500, 400, "explosion3");
     this.anims.create({
       key: "explode3",
@@ -84,20 +75,18 @@ class GameOverScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     });
-
     this.time.delayedCall(
       800,
       function () {
         this.explosion3.anims.play("explode3", true);
-       
+
       },
       [],
       this
     );
   }
-  
 
-
+  //Function to return to main menu
   startScene(targetScene) {
     this.cameras.main.fade(2500);
     this.time.delayedCall(
@@ -110,12 +99,12 @@ class GameOverScene extends Phaser.Scene {
       [],
       this
     );
-  
+
   }
 
-  
 
-    
+
+
 
 
 }

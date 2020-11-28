@@ -41,7 +41,6 @@ class GameScene extends Phaser.Scene {
     this.enemyHit = this.sound.add("enemyHit");
     this.healthUp = this.sound.add("healthUp");
     this.playerHit = this.sound.add("playerHit");
-    this.playerDeath = this.sound.add("playerDeath");
   }
 
   createTilemap() {
@@ -553,8 +552,9 @@ class GameScene extends Phaser.Scene {
 
     if (!this.player.isPlayerAlive) {
     
- 
+  
       this.gameOver();
+     
       
       return;
      
@@ -564,7 +564,7 @@ class GameScene extends Phaser.Scene {
 
     //Win
     if (this.player.isPlayerWinning === true) {
-
+     
       this.scene.start("Win", { score: this.player.score })
       return;
     }
@@ -688,17 +688,20 @@ class GameScene extends Phaser.Scene {
     console.log("hello from gameOver")
     this.music.stop();
     // this.playerDeath.play();
+   
     this.time.delayedCall(
+     
       2000,
       function () {
-    
-       
+      
         this.scene.start("GameOver");
         
       },
       [],
       this
     );
+
+    
    
   }
 

@@ -29,6 +29,7 @@ class BootScene extends Phaser.Scene {
     this.load.image("button1", "assets/blue_button01.png");
     this.load.image("button2", "assets/blue_button02.png");
     this.load.image("health", "assets/health.png");
+    this.load.image("fire", "assets/fire.png");
 
     //Room Masks
     this.load.image("hallway1", "assets/roomMasks/hallway1.png");
@@ -45,6 +46,15 @@ class BootScene extends Phaser.Scene {
     this.load.image("room4", "assets/roomMasks/room4.png");
     this.load.image("room5", "assets/roomMasks/room5.png");
     this.load.image("room6", "assets/roomMasks/room6.png");
+
+    //Keys for Help 
+    this.load.image("asd", "assets/keys/asdKey.png");
+    this.load.image("i", "assets/keys/iKey.png");
+    this.load.image("jkl", "assets/keys/jklKey.png");
+    this.load.image("m", "assets/keys/mKey.png");
+    this.load.image("spacekey", "assets/keys/spaceKey.png");
+    this.load.image("w", "assets/keys/wKey.png");
+   
   
   }
   
@@ -88,53 +98,60 @@ class BootScene extends Phaser.Scene {
     frameHeight: 256,
   });
 
+     //Fire
+     this.load.spritesheet("fire", "assets/fire.png", {
+      frameWidth: 58,
+      frameHeight: 72,
+    });
+
 }
 
 
 loadAudio() {
   // Adding Sounds
   //Music
+  //Main
   this.load.audio("mainmusic", [
     "assets/sounds/mainMusic.mp3",
     "assets/sounds/mainMusic.ogg",
   ]);
-
+  //Intro
   this.load.audio("introMusic", [
     "assets/sounds/introMusic.mp3",
     "assets/sounds/introMusic.ogg",
   ]);
-
+  //Game Over
   this.load.audio("gameOver", [
     "assets/sounds/gameOver.mp3",
     "assets/sounds/gameOver.ogg",
   ]);
+  //Win
+  this.load.audio("winMusic", [
+    "assets/sounds/winMusic.mp3",
+    "assets/sounds/winMusic.ogg",
+  ]);
 
   //Sound effects
+  //Laser
   this.load.audio("laser", [
     "assets/sounds/laser.mp3",
     "assets/sounds/laser.ogg",
   ]);
-
+  //Enemy Hit
   this.load.audio("enemyHit", [
     "assets/sounds/enemyHit.mp3",
     "assets/sounds/enemyHit.ogg",
   ]);
-
+  //Health up
   this.load.audio("healthUp", [
     "assets/sounds/healthUp.mp3",
     "assets/sounds/healthUp.ogg",
   ]);
-
+  //Player hit
   this.load.audio("playerHit", [
     "assets/sounds/playerHit.mp3",
     "assets/sounds/playerHit.ogg",
   ]);
-
-  this.load.audio("playerDeath", [
-    "assets/sounds/playerDeath.mp3",
-    "assets/sounds/playerDeath.ogg",
-  ]);
-
 }
 
 

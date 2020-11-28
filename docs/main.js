@@ -9,7 +9,8 @@ var config = {
     TitleScene,
     GameScene,
     WinScene,
-    UiScene,
+    HelpScene,
+    OptionsScene,
     GameOverScene
   ],
   physics: {

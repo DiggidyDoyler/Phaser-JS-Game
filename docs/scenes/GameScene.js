@@ -520,11 +520,6 @@ class GameScene extends Phaser.Scene {
     this.healthText.setScale(0.25);
     this.healthText.setTint(0x006400, 0x006400, 0x006400, 0x006400);
     this.healthText.setDepth();
-
-    this.timeText = this.add.bitmapText(16, 16, 'bmFont', 'Time: 0');
-    this.timeText.setScale(0.25);
-    this.timeText.setTint(0x006400, 0x006400, 0x006400, 0x006400);
-    this.timeText.setDepth();
   }
 
   updateText() {

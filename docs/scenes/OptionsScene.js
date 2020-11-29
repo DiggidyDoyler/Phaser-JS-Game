@@ -10,6 +10,7 @@ class OptionsScene extends Phaser.Scene {
   }
 
   create() {
+   
     //Play Music
     this.music = this.sound.add("introMusic");
 
@@ -64,7 +65,9 @@ class OptionsScene extends Phaser.Scene {
 
   startScene(targetScene) {
     this.music.stop();
+    this.scene.stop();
     this.scene.start(targetScene);
+  
   }
 
 

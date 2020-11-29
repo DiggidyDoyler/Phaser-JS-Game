@@ -11,6 +11,9 @@ class GameOverScene extends Phaser.Scene {
 
   create() {
 
+    //Stop music that may come over from other scenes
+    this.sound.stopAll();
+    
     this.music = this.sound.add("gameOver");
     this.music.loop = true;
     this.music.play();
@@ -32,7 +35,7 @@ class GameOverScene extends Phaser.Scene {
     this.gameOverText.setTint(0xffffff, 0xffffff, 0xffffff, 0xffffff);
 
     //Button
-    this.mainMenuButton = new UiButton(this, this.scaleW / 2, this.scaleH * 0.65, 'button1', 'button2', 'Main menu', this.startScene.bind(this, 'Title'));
+    this.mainMenuButton = new UiButton(this, this.scaleW / 2, 700, 'button1', 'button2', 'Main menu', this.startScene.bind(this, 'Game'));
   }
 
   //Create explosion animations
@@ -92,6 +95,7 @@ class GameOverScene extends Phaser.Scene {
     this.time.delayedCall(
       2500,
       function () {
+        // this.scene.restart();
         this.music.stop();
         this.scene.start(targetScene);
         return;

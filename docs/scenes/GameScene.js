@@ -16,6 +16,7 @@ class GameScene extends Phaser.Scene {
 
   create() {
 
+    this.sound.stopAll();
     this.createAudio();
     this.createTilemap();
     this.createPlayer();
@@ -33,10 +34,12 @@ class GameScene extends Phaser.Scene {
 
   createAudio() {
     // Adding Sounds
+    //Music
     this.music = this.sound.add("mainmusic");
     this.music.loop = true;
-    // this.music.reset();
     this.music.play();
+
+    //SFX
     this.laser = this.sound.add("laser");
     this.enemyHit = this.sound.add("enemyHit");
     this.healthUp = this.sound.add("healthUp");
@@ -387,15 +390,6 @@ class GameScene extends Phaser.Scene {
       );
     }
 
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.healthPickup1,
-    //   this.collPlayerHealthpick1,
-    //   null,
-    //   this
-    // );
-
-
   }
 
 
@@ -547,24 +541,17 @@ class GameScene extends Phaser.Scene {
     //Lose
     if (this.player.Health <= 0) {
       this.isPlayerAlive = false;
-    
     }
 
     if (!this.player.isPlayerAlive) {
-    
-  
+      this.music.stop();
       this.gameOver();
-     
-      
       return;
-     
-
-
     }
 
     //Win
     if (this.player.isPlayerWinning === true) {
-     
+      this.music.stop();
       this.scene.start("Win", { score: this.player.score })
       return;
     }
@@ -686,23 +673,18 @@ class GameScene extends Phaser.Scene {
 
   gameOver() {
     console.log("hello from gameOver")
-    this.music.stop();
-    // this.playerDeath.play();
-   
     this.time.delayedCall(
-     
       2000,
       function () {
-      
-        this.scene.start("GameOver");
+        this.scene.stop('Game');
+        this.scene.restart();
         
+        this.scene.start("GameOver");
+        this.music.stop();
       },
       [],
       this
     );
-
-    
-   
   }
 
 
@@ -762,14 +744,14 @@ class GameScene extends Phaser.Scene {
   //Collisions for Player and Enemies
   collPlayerEnemy() {
     console.log("Enemy hit player");
-   
     this.player.Health = this.player.Health - 1;
     console.log("Player health: " + this.player.Health)
-    if (this.player.Health > 0){
+    if (this.player.Health > 0) {
       this.playerHit.play();
     }
 
   }
+
 
   //Collisions for Enemies and Bullets
   collBulletEnemy1(bullet, enemy1) {
@@ -781,7 +763,7 @@ class GameScene extends Phaser.Scene {
     this.enemy1.health = this.enemy1.health - 1;
     console.log("enemy health1 " + this.enemy1.health);
     this.enemyHit.play();
-  
+
   }
 
   collBulletEnemy2(bullet, enemy2) {

@@ -106,7 +106,6 @@ class BootScene extends Phaser.Scene {
 
 }
 
-
 loadAudio() {
   // Adding Sounds
   //Music
@@ -156,6 +155,6 @@ loadAudio() {
 
 
   create() {
-    this.scene.start("Title");
+    this.scene.start("Win");
   }
 }

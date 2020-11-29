@@ -64,6 +64,7 @@ class HelpScene extends Phaser.Scene {
 
   startScene(targetScene) {
     this.music.stop();
+    this.scene.stop();
     this.scene.start(targetScene);
   }
 

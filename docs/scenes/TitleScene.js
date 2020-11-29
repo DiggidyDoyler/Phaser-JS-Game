@@ -11,6 +11,8 @@ class TitleScene extends Phaser.Scene {
 
   create() {
 
+    //Stop any sounds that may come over from other scenes
+    this.sound.stopAll();
     //Add Music
     this.music = this.sound.add("introMusic");
     //If music is not playing, play and loop music
@@ -39,10 +41,10 @@ class TitleScene extends Phaser.Scene {
     this.startGameButton = new UiButton(this, this.scaleW / 2, 700, 'button1', 'button2', 'Start', this.startGame.bind(this, 'Game'));
     
     //Help
-    this.helpButton = new UiButton(this, this.scaleW / 2, 800, 'button1', 'button2', 'Help', this.startOptions.bind(this, 'Help'));
+    this.helpButton = new UiButton(this, this.scaleW / 2, 800, 'button1', 'button2', 'Help', this.startOptions.bind(this, 'Help',  { music: this.music }));
 
     //Options
-    this.OptionsButton = new UiButton(this, this.scaleW / 2, 900, 'button1', 'button2', 'Options', this.startOptions.bind(this, 'Options'));  
+    this.OptionsButton = new UiButton(this, this.scaleW / 2, 900, 'button1', 'button2', 'Options', this.startOptions.bind(this, 'Options',  { music: this.music }));  
   }
 
  
@@ -63,7 +65,7 @@ class TitleScene extends Phaser.Scene {
   //Start options/help
   startOptions(targetScene, x) {
         this.music.stop();
-        this.scene.start(targetScene);
+        this.scene.start(targetScene, { music: this.x });
   }
     
 

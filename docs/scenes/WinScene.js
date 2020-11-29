@@ -45,6 +45,7 @@ class WinScene extends Phaser.Scene {
   //Start Scene Function
   startScene(targetScene) {
     this.music.stop();
+    // this.scene.stop('Win');
     this.scene.start(targetScene);
   }
 

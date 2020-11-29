@@ -39,24 +39,14 @@ class Bullet extends Phaser.GameObjects.Image {
             this.y += this.speed * delta;
         }
 
-
-
-        //check for bullet limit 
-        // if (this.x > 2300 || this.x < -5 || this.y > 1700 || this.y < -5)
-        // {
-        //     //if outside view make inactive and invisible
-        //     this.setActive(false);
-        //     this.setVisible(false);
-        // }
-
-        //             //Delete after time
+           //Delete after time
         if (this.timer % 45 === 0) {
 
             this.setActive(false);
             this.setVisible(false);
             this.destroy();
         }
-        // }
+
 
     }
 }

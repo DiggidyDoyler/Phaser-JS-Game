@@ -15,6 +15,8 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
+    //Stops any sounds/music that may cross over from other scenes
+    this.sound.stopAll();
 
     this.createAudio();
     this.createTilemap();
@@ -27,16 +29,19 @@ class GameScene extends Phaser.Scene {
     this.handleCollisions();
     this.hideAreas();
     this.createText();
+ 
 
 
   }
 
   createAudio() {
     // Adding Sounds
+    //Music
     this.music = this.sound.add("mainmusic");
     this.music.loop = true;
-    // this.music.reset();
     this.music.play();
+
+    //SFX
     this.laser = this.sound.add("laser");
     this.enemyHit = this.sound.add("enemyHit");
     this.healthUp = this.sound.add("healthUp");
@@ -44,6 +49,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createTilemap() {
+    //Creating Tile Map
     this.map = this.make.tilemap({ key: "map" });
     console.log("mapWidth: ", this.map.widthInPixels);
     console.log("mapHeight: ", this.map.heightInPixels);
@@ -79,6 +85,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createPlayer() {
+    //Creating player sprite
     this.player = this.physics.add.sprite(255, 150, "player");
     this.player.body.setSize(this.player.width * 0.5, this.player.height * 0.8);
     this.player.body.offset.y = 12;
@@ -87,7 +94,7 @@ class GameScene extends Phaser.Scene {
     this.player.Health = 100;
     this.player.score = 0;
 
-
+    //Setting player collisions
     this.player.setCollideWorldBounds(true)
     this.physics.add.collider(this.player, this.wallLayer);
 
@@ -127,11 +134,18 @@ class GameScene extends Phaser.Scene {
       frameRate: 10,
     });
 
+    this.anims.create({
+      key: "death",
+      frames: this.anims.generateFrameNumbers("playerDeath", { start: 1, end: 6 }),
+      frameRate: 2.5,
+    });
+
 
 
   }
 
   movePlayer() {
+    //Input keys
     this.cursors = this.input.keyboard.createCursorKeys();
 
     let keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -141,58 +155,67 @@ class GameScene extends Phaser.Scene {
 
 
     // Move/Animate the player
-    // Left
-    if (keyA.isDown) {
-      this.player.setVelocityX(-this.playerSpeed);
-      this.player.anims.play("left", true);
-      // Left & Down
-    } else if ((keyA.isDown) & (keyS.isDown)) {
-      this.player.setVelocityX(-this.playerSpeed);
-      this.player.setVelocityY(this.playerSpeed);
-      this.player.anims.play("left", true);
-      // Left & Up
-    } else if ((keyA.isDown) & (keyW.isDown)) {
-      this.player.setVelocityX(-this.playerSpeed);
-      this.player.setVelocityY(-this.playerSpeed);
-      this.player.anims.play("left", true);
-      //Right
-    } else if (keyD.isDown) {
-      this.player.setVelocityX(this.playerSpeed);
-      this.player.anims.play("right", true);
-      // Right & Down
-    } else if ((keyD.isDown) & (keyS.isDown)) {
-      this.player.setVelocityX(this.playerSpeed);
-      this.player.setVelocityY(this.playerSpeed);
-      this.player.anims.play("left", true);
-      // Right & Up
-    } else if ((keyD.isDown) & (keyW.isDown)) {
-      this.player.setVelocityX(this.playerSpeed);
-      this.player.setVelocityY(-this.playerSpeed);
-      this.player.anims.play("left", true);
-      //Down
-    } else if (keyS.isDown) {
-      this.player.setVelocityY(this.playerSpeed);
-      this.player.anims.play("down", true);
-      //Up
-    } else if (keyW.isDown) {
-      this.player.setVelocityY(-this.playerSpeed);
-      this.player.anims.play("up", true);
-      //Stand
-    } else {
-      this.player.anims.play("stand");
-      this.player.setVelocity(0);
-    }
+    //If the player is alive
+    if (this.player.isPlayerAlive) {
+      // Left
+      if (keyA.isDown) {
+        this.player.setVelocityX(-this.playerSpeed);
+        this.player.anims.play("left", true);
+        // Left & Down
+      } else if ((keyA.isDown) & (keyS.isDown)) {
+        this.player.setVelocityX(-this.playerSpeed);
+        this.player.setVelocityY(this.playerSpeed);
+        this.player.anims.play("left", true);
+        // Left & Up
+      } else if ((keyA.isDown) & (keyW.isDown)) {
+        this.player.setVelocityX(-this.playerSpeed);
+        this.player.setVelocityY(-this.playerSpeed);
+        this.player.anims.play("left", true);
+        //Right
+      } else if (keyD.isDown) {
+        this.player.setVelocityX(this.playerSpeed);
+        this.player.anims.play("right", true);
+        // Right & Down
+      } else if ((keyD.isDown) & (keyS.isDown)) {
+        this.player.setVelocityX(this.playerSpeed);
+        this.player.setVelocityY(this.playerSpeed);
+        this.player.anims.play("left", true);
+        // Right & Up
+      } else if ((keyD.isDown) & (keyW.isDown)) {
+        this.player.setVelocityX(this.playerSpeed);
+        this.player.setVelocityY(-this.playerSpeed);
+        this.player.anims.play("left", true);
+        //Down
+      } else if (keyS.isDown) {
+        this.player.setVelocityY(this.playerSpeed);
+        this.player.anims.play("down", true);
+        //Up
+      } else if (keyW.isDown) {
+        this.player.setVelocityY(-this.playerSpeed);
+        this.player.anims.play("up", true);
+        //Stand
+      } else {
+        this.player.anims.play("stand");
+        this.player.setVelocity(0);
+      }
 
-    //Sprint
-    if (this.cursors.space.isDown) {
-      this.playerSpeed = 250;
-    }
-    else {
-      this.playerSpeed = 100;
+      //Sprint
+      if (this.cursors.space.isDown) {
+        this.playerSpeed = 250;
+      }
+      else {
+        this.playerSpeed = 100;
+      }
+    //Else, if the player is dead, they cannot move
+    } else {
+      this.player.setVelocityX(0);
+      this.player.setVelocityY(0);
+
     }
   }
 
   checkPlayerHealth() {
+    //If the player's health is equal to or less then 0, they are dead
     if (this.player.Health <= 0) {
       this.player.isPlayerAlive = false;
     }
@@ -200,13 +223,12 @@ class GameScene extends Phaser.Scene {
   }
 
   healthPickups() {
+    //Creating multiple health pickups
     this.healthPickup1 = this.physics.add.sprite(1215, 110, "health");
     this.healthPickup2 = this.physics.add.sprite(2100, 900, "health");
     this.healthPickup3 = this.physics.add.sprite(560, 1075, "health");
 
-
-    // this.healthPickup1.setScale(.15);
-    // this.healthPickup1.body.immovable = true;
+    //For loop to set scale and immovable body to all health sprites
     let i;
     for (i = 1; i < 4; i++) {
       this['healthPickup' + i].setScale(.15);
@@ -216,6 +238,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createShip() {
+    //Creating Ship Sprite
     this.ship = this.physics.add.sprite(1500, 1580, "ship");
     this.ship.body.immovable = true;
     this.ship.setScale(4);
@@ -225,8 +248,9 @@ class GameScene extends Phaser.Scene {
   }
 
   hideAreas() {
+    //Creating multiple masks for hallways and rooms
     this.hallway1 = this.physics.add.sprite(256, 400, "hallway1");
-    this.hallway2 = this.physics.add.sprite(256, 900, "hallway2");
+    this.hallway2 = this.physics.add.sprite(256, 897, "hallway2");
     this.hallway3 = this.physics.add.sprite(689, 640, "hallway3");
     this.hallway4 = this.physics.add.sprite(1216, 336, "hallway4");
     this.hallway5 = this.physics.add.sprite(1682, 513, "hallway5");
@@ -241,7 +265,7 @@ class GameScene extends Phaser.Scene {
     this.roomMask6 = this.physics.add.sprite(1505, 1521, "room6");
 
 
-    //Hide masks when player collides
+    //For loops to create multiple collisions instances between player and hallways/rooms
     //Hallways
     let i;
     for (i = 1; i < 8; i++) {
@@ -267,11 +291,11 @@ class GameScene extends Phaser.Scene {
   }
 
   createCamera() {
-
+    //Creating Camera
     this.camera = this.cameras.main;
+    //Follow the player
     this.camera.startFollow(this.player, true);
-    // this.camera.setZoom(4)
-
+    //Camera restricted to world bounds
     this.physics.world.setBounds(
       0,
       0,
@@ -281,7 +305,9 @@ class GameScene extends Phaser.Scene {
   }
 
   zoomCamera() {
+    //Input
     let keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+    //If 'm' is pressed zoom out, else zoom in
     if (keyM.isDown) {
       this.camera.setZoom(1);
     } else {
@@ -290,8 +316,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createEnemy() {
-
-
+    //Creating enemis with the enemy class
     //Area 1
     this.enemy1 = new Enemy(this, 100, 600);
     this.enemy2 = new Enemy(this, 360, 600);
@@ -315,10 +340,9 @@ class GameScene extends Phaser.Scene {
     this.enemy15 = new Enemy(this, 1500, 1050);
     this.enemy16 = new Enemy(this, 1500, 1440);
 
-
+    //Putting enemies in array to easily collide with objects
     this.enemies = [this.enemy1, this.enemy2, this.enemy3, this.enemy4, this.enemy5, this.enemy6, this.enemy7, this.enemy8, this.enemy9, this.enemy10, this.enemy11, this.enemy12, this.enemy13, this.enemy14, this.enemy15, this.enemy16]
     this.physics.add.collider(this.enemies, this.wallLayer);
-
 
     //Looping enemy collider, so all of the enemies will collide with all other enemies
     let i;
@@ -340,11 +364,11 @@ class GameScene extends Phaser.Scene {
       this.physics.add.collider(this.enemy15, this['enemy' + i]);
       this.physics.add.collider(this.enemy16, this['enemy' + i]);
     }
-
   }
 
-  handleCollisions() {
 
+  handleCollisions() {
+    //For loops to create instances for bullets, the player, health pickups and the ship. Instances properties are handled at the bottom of the script.
     let i;
     for (i = 1; i < 17; i++) {
       //Add overlap between Bullets and enemies  
@@ -376,7 +400,7 @@ class GameScene extends Phaser.Scene {
       null,
       this
     );
-
+    //Health pickups
     for (i = 1; i < 4; i++) {
       this.physics.add.collider(
         this.player,
@@ -387,19 +411,10 @@ class GameScene extends Phaser.Scene {
       );
     }
 
-    // this.physics.add.collider(
-    //   this.player,
-    //   this.healthPickup1,
-    //   this.collPlayerHealthpick1,
-    //   null,
-    //   this
-    // );
-
-
   }
 
-
   checkEnemyHealth() {
+    //If the enemy's health is equal to 0, the enemy is dead and destroy the enemy
     if (this.enemy1.health === 0) {
       this.enemy1.Alive = false;
       // console.log("Enemy is dead")
@@ -494,8 +509,8 @@ class GameScene extends Phaser.Scene {
     this.lastFired = 0;
   }
 
-
   createText() {
+    //Create bitmap Text for score and health
     this.scoreText = this.add.bitmapText(16, 16, 'bmFont', 'score: 0');
     this.scoreText.setScale(0.25);
     this.scoreText.setTint(0x006400, 0x006400, 0x006400, 0x006400);
@@ -507,11 +522,11 @@ class GameScene extends Phaser.Scene {
     this.healthText.setDepth();
   }
 
-
-
   updateText() {
-    //M 
+    //Input key
     let keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+
+    //Change the positioning of the text
     //If zoomed in
     if (keyM.isDown) {
       //Score
@@ -525,6 +540,7 @@ class GameScene extends Phaser.Scene {
       this.healthText.setScale(1);
       this.healthText.x = this.player.x - 880;
       this.healthText.y = this.player.y - 500;
+
       //If zoomed out
       //Score
     } else {
@@ -538,33 +554,29 @@ class GameScene extends Phaser.Scene {
       this.healthText.setScale(0.25);
       this.healthText.x = this.player.x - 220;
       this.healthText.y = this.player.y - 125;
+
     }
   }
 
-
-  //gameLoop
   update(time, delta) {
+    
     //Lose
+    //If the player's health is less than zero
     if (this.player.Health <= 0) {
       this.isPlayerAlive = false;
-    
+      this.player.anims.play("death", true);
     }
 
     if (!this.player.isPlayerAlive) {
-    
-  
+      this.music.stop();
+
       this.gameOver();
-     
-      
       return;
-     
-
-
     }
 
     //Win
     if (this.player.isPlayerWinning === true) {
-     
+      this.music.stop();
       this.scene.start("Win", { score: this.player.score })
       return;
     }
@@ -575,28 +587,29 @@ class GameScene extends Phaser.Scene {
     this.checkEnemyHealth();
     this.updateText();
 
-    // //Tracking first area
+    //Ememy tracking the player
+    //Tracking first area
     if (this.player.y > 470) {
       this.enemy1.trackPlayer(this.player.x, this.player.y);
       this.enemy2.trackPlayer(this.player.x, this.player.y);
     }
-    // // //Tracking second area
+    //Tracking second area
     if (this.player.y > 960 & this.player.x < 1060) {
       this.enemy3.trackPlayer(this.player.x, this.player.y);
       this.enemy4.trackPlayer(this.player.x, this.player.y);
       this.enemy5.trackPlayer(this.player.x, this.player.y);
     }
-    // // //Tracking third area 
+    //Tracking third area 
     if (this.player.x > 940 & this.player.x < 1530 & this.player.y > 500 & this.player.y < 700) {
       this.enemy6.trackPlayer(this.player.x, this.player.y);
       this.enemy7.trackPlayer(this.player.x, this.player.y);
       this.enemy8.trackPlayer(this.player.x, this.player.y);
     }
-    // // //Tracking fourth area
+    //Tracking fourth area
     if (this.player.x > 940 & this.player.y < 300) {
       this.enemy9.trackPlayer(this.player.x, this.player.y);
     }
-    // // //Tracking fifth area
+    //Tracking fifth area
     if (this.player.x > 1920) {
       this.enemy10.trackPlayer(this.player.x, this.player.y);
       this.enemy11.trackPlayer(this.player.x, this.player.y);
@@ -604,15 +617,16 @@ class GameScene extends Phaser.Scene {
       this.enemy13.trackPlayer(this.player.x, this.player.y);
       this.enemy14.trackPlayer(this.player.x, this.player.y);
     }
-    // // //Tracking hallway
+    //Tracking hallway
     if (this.player.x < 1890 & this.player.x > 1200 & this.player.y > 980) {
       this.enemy15.trackPlayer(this.player.x, this.player.y);
     }
-    // // //Tracking final area
+    //Tracking final area
     if (this.player.x > 1450 & this.player.x < 1700 & this.player.y > 1300) {
       this.enemy16.trackPlayer(this.player.x, this.player.y);
     }
 
+    //Input keys for shooting
     let keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     let keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
     let keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
@@ -631,10 +645,7 @@ class GameScene extends Phaser.Scene {
         this.bullet.body.setSize(this.bullet.width * 1, this.bullet.height * 1);
         this.lastFired = time + 500;
       }
-
     }
-
-    //Shooting
     //Shoot Up
     if (keyI.isDown && time > this.lastFired) {
       console.log("fire")
@@ -646,9 +657,7 @@ class GameScene extends Phaser.Scene {
         this.bullet.fire(this.player.x, this.player.y);
         this.bullet.body.setSize(this.bullet.width * 1, this.bullet.height * 1);
         this.lastFired = time + 500;
-
       }
-
     }
 
     //Shoot Left
@@ -663,7 +672,6 @@ class GameScene extends Phaser.Scene {
         this.bullet.body.setSize(this.bullet.width * 1, this.bullet.height * 1);
         this.lastFired = time + 500;
       }
-
     }
 
 
@@ -679,34 +687,27 @@ class GameScene extends Phaser.Scene {
         this.bullet.body.setSize(this.bullet.width * 1, this.bullet.height * 1);
         this.lastFired = time + 500;
       }
-
     }
-
   }
 
   gameOver() {
+    //Game over function
     console.log("hello from gameOver")
-    this.music.stop();
-    // this.playerDeath.play();
-   
+    //Delayed call to allow player death animaton to play 
     this.time.delayedCall(
-     
-      2000,
+      1900,
       function () {
-      
+        this.scene.stop('Game');
+        this.scene.restart();
         this.scene.start("GameOver");
-        
       },
       [],
       this
     );
-
-    
-   
   }
 
-
-  // Collisions For Masks
+  //Collision Handlers *Collisions handlers could not be looped*
+  //Collisions For Masks
   collHallway1() {
     this.hallway1.setVisible(false);
   }
@@ -762,14 +763,14 @@ class GameScene extends Phaser.Scene {
   //Collisions for Player and Enemies
   collPlayerEnemy() {
     console.log("Enemy hit player");
-   
     this.player.Health = this.player.Health - 1;
     console.log("Player health: " + this.player.Health)
-    if (this.player.Health > 0){
+    if (this.player.Health > 0) {
       this.playerHit.play();
     }
 
   }
+
 
   //Collisions for Enemies and Bullets
   collBulletEnemy1(bullet, enemy1) {
@@ -781,7 +782,7 @@ class GameScene extends Phaser.Scene {
     this.enemy1.health = this.enemy1.health - 1;
     console.log("enemy health1 " + this.enemy1.health);
     this.enemyHit.play();
-  
+
   }
 
   collBulletEnemy2(bullet, enemy2) {

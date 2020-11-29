@@ -43,8 +43,8 @@ class GameOverScene extends Phaser.Scene {
 
   //Create explosion animations
   createExplosion() {
-    //Explosion1
-    this.explosion1 = this.add.sprite(600, 500, "explosion1");
+    //Explosion1 & 4
+    this.explosion1 = this.add.sprite(600, 530, "explosion1");
     this.explosion4 = this.add.sprite(1300, 500, "explosion1");
     this.anims.create({
       key: "explode1",
@@ -66,8 +66,9 @@ class GameOverScene extends Phaser.Scene {
     );
     
 
-    //Explosion2
+    //Explosion2 & 5
     this.explosion2 = this.add.sprite(1100, 700, "explosion2");
+    this.explosion5 = this.add.sprite(1700, 650, "explosion2");
     this.anims.create({
       key: "explode2",
       frames: this.anims.generateFrameNumbers("explosion2", { start: 0, end: 64 }),
@@ -85,8 +86,19 @@ class GameOverScene extends Phaser.Scene {
       this
     );
 
-    //Explosion3
+    this.time.delayedCall(
+      1100,
+      function () {
+        this.explosion5.anims.play("explode2", true);
+
+      },
+      [],
+      this
+    );
+
+    //Explosion3 & 6
     this.explosion3 = this.add.sprite(1500, 400, "explosion3");
+    this.explosion6 = this.add.sprite(900, 400, "explosion3");
     this.anims.create({
       key: "explode3",
       frames: this.anims.generateFrameNumbers("explosion3", { start: 0, end: 64 }),
@@ -97,6 +109,15 @@ class GameOverScene extends Phaser.Scene {
       800,
       function () {
         this.explosion3.anims.play("explode3", true);
+
+      },
+      [],
+      this
+    );
+    this.time.delayedCall(
+      1400,
+      function () {
+        this.explosion6.anims.play("explode3", true);
 
       },
       [],

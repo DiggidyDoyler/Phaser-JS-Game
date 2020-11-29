@@ -250,7 +250,7 @@ class GameScene extends Phaser.Scene {
   hideAreas() {
     //Creating multiple masks for hallways and rooms
     this.hallway1 = this.physics.add.sprite(256, 400, "hallway1");
-    this.hallway2 = this.physics.add.sprite(256, 900, "hallway2");
+    this.hallway2 = this.physics.add.sprite(256, 897, "hallway2");
     this.hallway3 = this.physics.add.sprite(689, 640, "hallway3");
     this.hallway4 = this.physics.add.sprite(1216, 336, "hallway4");
     this.hallway5 = this.physics.add.sprite(1682, 513, "hallway5");
@@ -366,7 +366,7 @@ class GameScene extends Phaser.Scene {
     }
   }
 
- 
+
   handleCollisions() {
     //For loops to create instances for bullets, the player, health pickups and the ship. Instances properties are handled at the bottom of the script.
     let i;

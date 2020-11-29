@@ -10,14 +10,14 @@ class HelpScene extends Phaser.Scene {
   }
 
   create() {
-    //Play Music
-    this.music = this.sound.add("introMusic");
+    // //Play Music
+    // this.music = this.sound.add("introMusic");
 
-    if (!this.music.play()) {
-      this.music.restart();
-      this.music.play();
-      this.music.loop = true;
-    }
+    // if (!this.music.play()) {
+    //   this.music.restart();
+    //   this.music.play();
+    //   this.music.loop = true;
+    // }
 
     //Background
     this.background = this.add.sprite(0, 0, "background");
@@ -63,7 +63,7 @@ class HelpScene extends Phaser.Scene {
   }
 
   startScene(targetScene) {
-    this.music.stop();
+    // this.music.stop();
     this.scene.stop();
     this.scene.start(targetScene);
   }

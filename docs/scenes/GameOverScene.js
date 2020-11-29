@@ -29,19 +29,23 @@ class GameOverScene extends Phaser.Scene {
     this.createExplosion();
 
     //Text
-    this.gameOverText = this.add.bitmapText(this.scaleW / 2, 200, 'bmFont', 'Game Over!');
+    this.gameOverText = this.add.bitmapText(this.scaleW / 2, 200, 'bmFont', 'Game Over');
     this.gameOverText.setOrigin(0.5);
     this.gameOverText.setScale(2.5);
     this.gameOverText.setTint(0xffffff, 0xffffff, 0xffffff, 0xffffff);
 
     //Button
-    this.mainMenuButton = new UiButton(this, this.scaleW / 2, 700, 'button1', 'button2', 'Main menu', this.startScene.bind(this, 'Game'));
+    
+    this.retryButton = new UiButton(this, this.scaleW / 2, 800, 'button1', 'button2', 'Retry', this.startScene.bind(this, 'Game'));
+
+    this.mainMenuButton = new UiButton(this, this.scaleW / 2, 900, 'button1', 'button2', 'Main menu', this.startScene.bind(this, 'Title'));
   }
 
   //Create explosion animations
   createExplosion() {
     //Explosion1
     this.explosion1 = this.add.sprite(600, 500, "explosion1");
+    this.explosion4 = this.add.sprite(1300, 500, "explosion1");
     this.anims.create({
       key: "explode1",
       frames: this.anims.generateFrameNumbers("explosion1", { start: 0, end: 64 }),
@@ -50,6 +54,17 @@ class GameOverScene extends Phaser.Scene {
     });
 
     this.explosion1.anims.play("explode1", true);
+
+    this.time.delayedCall(
+      600,
+      function () {
+        this.explosion4.anims.play("explode1", true);
+
+      },
+      [],
+      this
+    );
+    
 
     //Explosion2
     this.explosion2 = this.add.sprite(1100, 700, "explosion2");

@@ -77,6 +77,12 @@ class BootScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+
+    this.load.spritesheet("playerDeath", "assets/death.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
   //Enemy
   this.load.spritesheet("enemy", "assets/lizard.png", {
     frameWidth: 16,
@@ -152,9 +158,7 @@ loadAudio() {
     "assets/sounds/playerHit.ogg",
   ]);
 }
-
-
   create() {
-    this.scene.start("Win");
+    this.scene.start("Title");
   }
 }

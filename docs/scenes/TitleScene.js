@@ -35,6 +35,7 @@ class TitleScene extends Phaser.Scene {
     this.titleText.setOrigin(0.5);
     this.titleText.setScale(2.5);
     this.titleText.setTint(0xffffff,0xffffff, 0xffffff, 0xffffff);
+
     
     //Buttons
     //Start 
@@ -54,7 +55,7 @@ class TitleScene extends Phaser.Scene {
     this.time.delayedCall(
       2500,
       function () {
-        this.music.stop();
+        // this.music.stop();
         this.scene.start(targetScene);
       },
       [],
@@ -64,9 +65,10 @@ class TitleScene extends Phaser.Scene {
 
   //Start options/help
   startOptions(targetScene, x) {
-        this.music.stop();
+        // this.music.stop();
         this.scene.start(targetScene, { music: this.x });
   }
     
+
 
 }

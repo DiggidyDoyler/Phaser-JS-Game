@@ -1,2 +1,2 @@
-# Source code folder
-Place your source code in here.
+# Space Escape
+College assignment, created a video game using the Phaser.js within 6 weeks. 
